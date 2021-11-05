@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from core.models import User
+from utils.image_functions import watermark_photo
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -33,6 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         for key in self.additional_fields:
             del validated_data[key]
+        if validated_data['user_photo']:
+            validated_data['user_photo'] = watermark_photo(validated_data['user_photo'], validated_data['email'])
         return User.objects.create_user(**validated_data)
 
 
