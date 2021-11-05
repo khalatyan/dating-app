@@ -41,6 +41,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    username = None
 
     first_name = models.CharField(
         u'Имя',
@@ -62,7 +63,8 @@ class User(AbstractUser):
     user_photo = models.ImageField(
         verbose_name=u'Фото пользователя',
         blank=True,
-        null=True
+        null=True,
+        upload_to='user-photo/'
     )
 
     sex = models.IntegerField(
