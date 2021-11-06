@@ -1,3 +1,5 @@
+from math import sin, cos, sqrt, atan2, radians
+
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -79,6 +81,16 @@ class User(AbstractUser):
         default=0
     )
 
+    longitude = models.FloatField(
+        verbose_name='Долгота',
+        default=0,
+    )
+
+    latitude = models.FloatField(
+        verbose_name='Широта',
+        default=0,
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -93,8 +105,24 @@ class User(AbstractUser):
     user_photo_img.allow_tags = True
     user_photo_img.short_description = u'Фото пользователя'
 
+    def get_user_distance(self, user):
+        EARTH_RADIUS = 6373.0
 
-    def get_user_photo_path (self):
+        lat1 = radians(self.latitude)
+        lon1 = radians(self.longitude)
+        lat2 = radians(user.latitude)
+        lon2 = radians(user.longitude)
+
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+
+        a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        distance = EARTH_RADIUS * c
+        return distance
+
+    def get_user_photo_path(self):
         if self.user_photo:
             return "http://127.0.0.1:8000" + str(self.user_photo.url)
         else:

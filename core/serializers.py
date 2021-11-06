@@ -18,8 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'sex', 'user_photo', 'password', 'replay_password'
-                  ]
+        fields = ['email', 'first_name', 'last_name', 'sex', 'user_photo', 'password', 'replay_password', 'longitude',
+                  'latitude']
 
     def validate(self, attrs):
         email = attrs.get('email', '')

@@ -110,8 +110,21 @@ class UserListView(ListAPIView):
     filterset_class = UserFilter
 
     def get_queryset(self):
+        self_request_user = self.request.user
+        max_distance = None
+        min_distance = None
+        if 'max_distance' in self.request.query_params and self.request.query_params.get('max_distance') != "":
+            max_distance = float(self.request.query_params.get('max_distance'))
+        if 'min_distance' in self.request.query_params and self.request.query_params.get('min_distance') != "":
+            min_distance = float(self.request.query_params.get('min_distance'))
+
         users = User.objects.all()
-        # serializer = UserDetailSerializer(users, many=True)
+        if max_distance or min_distance:
+            for user in users:
+                if max_distance and user.get_user_distance(self_request_user) > max_distance:
+                    users = users.exclude(id=user.id)
+                if min_distance and user.get_user_distance(self_request_user) < min_distance:
+                    users = users.exclude(id=user.id)
         return users
 
     # def get_queryset(self):

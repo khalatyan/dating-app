@@ -8,7 +8,7 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         ('Данные пользователя', {
             'fields': (
-                'first_name', 'last_name', 'email', 'user_photo', 'user_photo_img', 'sex'
+                'first_name', 'last_name', 'email', 'user_photo', 'user_photo_img', 'sex', 'longitude', 'latitude'
             )
         }),
         ('Редактирование полномочий', {
