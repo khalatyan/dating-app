@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
-from core.models import User
+from core.models import User, Estimation
+from core.models import ESTIMATION
 from utils.image_functions import watermark_photo
+
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -47,3 +49,12 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'password']
+
+
+class EstimationSerializer(serializers.ModelSerializer):
+    jwt = serializers.CharField(
+        max_length=115, min_length=115)
+
+    class Meta:
+        model = Estimation
+        fields = ['jwt', 'estimation']

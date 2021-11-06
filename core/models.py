@@ -10,6 +10,12 @@ SEX = [
     (2, "Женский"),
 ]
 
+ESTIMATION = [
+    (-1, "Дизлайк"),
+    (1, "Лайк"),
+]
+
+
 class UserManager(BaseUserManager):
     '''
     Менеджер пользователей, который вместо имени пользователя в качестве
@@ -83,8 +89,39 @@ class User(AbstractUser):
         if self.user_photo:
             image = format_html('<img src="{0}" height="150"/>', self.user_photo.url)
         return image
+
     user_photo_img.allow_tags = True
     user_photo_img.short_description = u'Фото пользователя'
 
     def __str__(self):
         return self.email
+
+
+class Estimation(models.Model):
+    who_rated = models.ForeignKey(
+        User,
+        verbose_name=u'Кто оценил',
+        on_delete=models.CASCADE,
+        related_name='who_rated_user'
+    )
+
+    who_was_rated = models.ForeignKey(
+        User,
+        verbose_name=u'Кого оценили',
+        on_delete=models.CASCADE,
+        related_name='who_was_rated_user'
+    )
+
+    estimation = models.IntegerField(
+        choices=ESTIMATION,
+        verbose_name="Оценка",
+        default=-1
+    )
+
+    def __str__(self):
+        return '%s' % self.id
+
+    class Meta:
+        unique_together = ('who_rated', 'who_was_rated',)
+        verbose_name = u'оценка'
+        verbose_name_plural = u'Оценки'

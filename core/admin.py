@@ -30,3 +30,19 @@ class UserAdmin(UserAdmin):
         'user_photo_img'
     ]
     ordering = ['email']
+
+
+@admin.register(Estimation)
+class EstimationAdmin(admin.ModelAdmin):
+    list_display = [
+        'who_rated', 'who_was_rated', 'estimation'
+    ]
+
+    search_fields = (
+        'who_rated', 'who_was_rates'
+    )
+
+    list_filter = [
+        'estimation'
+    ]
+

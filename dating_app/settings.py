@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '05y0mx)v#b#cm%(-zn93jx5j_zzm021h5ofa+vup+71%q)-4oh'
-
+JWT_SECRET_KEY = '05y0mx)v#b#cm%(-zn93jx5j_zzm021h5ofa+vup+71%q)-4oh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "rest_framework",
+    'mailer',
 
     'core',
     'utils'
@@ -137,6 +138,15 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # REST
 REST_FRAMEWORK = {"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema"}
+
+
+# mailer data
+EMAIL_BACKEND = "mailer.backend.DbBackend"
+EMAIL_HOST = ''
+EMAIL_PORT = 465
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+
 
 try:
     from dating_app.local_settings import *
