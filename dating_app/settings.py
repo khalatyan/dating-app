@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     'django_filters',
     "rest_framework",
     'mailer',
+    'mptt',
 
     'core',
-    'utils'
+    'utils',
+    'products'
 ]
 
 MIDDLEWARE = [
