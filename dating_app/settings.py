@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_filters',
     "rest_framework",
     'mailer',
 
@@ -137,7 +138,9 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 
 # REST
-REST_FRAMEWORK = {"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema"}
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": 'django_filters.rest_framework.DjangoFilterBackend',
+}
 
 
 # mailer data

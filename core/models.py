@@ -93,6 +93,13 @@ class User(AbstractUser):
     user_photo_img.allow_tags = True
     user_photo_img.short_description = u'Фото пользователя'
 
+
+    def get_user_photo_path (self):
+        if self.user_photo:
+            return "http://127.0.0.1:8000" + str(self.user_photo.url)
+        else:
+            return None
+
     def __str__(self):
         return self.email
 

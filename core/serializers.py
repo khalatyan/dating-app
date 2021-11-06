@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
                   ]
 
     def validate(self, attrs):
+        print('validate')
         email = attrs.get('email', '')
         password = attrs.get('password', '')
         replay_password = attrs.get('replay_password', '')
@@ -34,6 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
     def create(self, validated_data):
+        print('create')
         for key in self.additional_fields:
             del validated_data[key]
         if validated_data['user_photo']:
@@ -58,3 +60,15 @@ class EstimationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estimation
         fields = ['jwt', 'estimation']
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    user_photo = serializers.ReadOnlyField(source='get_user_photo_path')
+
+    class Meta:
+        model = User
+        fields = ['email', 'last_name', 'first_name', 'sex', 'user_photo']
+
+    def get_fields(self):
+        fields = super(UserDetailSerializer, self).get_fields()
+        return fields

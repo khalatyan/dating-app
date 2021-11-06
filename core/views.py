@@ -6,12 +6,14 @@ from django.contrib import auth
 from django.core.mail import send_mail
 from django.template import loader
 
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 
-from core.serializers import UserSerializer, LoginSerializer, EstimationSerializer
+from core.serializers import UserSerializer, LoginSerializer, EstimationSerializer, UserDetailSerializer
 from core.models import *
+from core.service import UserFilter
 
 class RegisterView(GenericAPIView):
     serializer_class = UserSerializer
@@ -19,7 +21,9 @@ class RegisterView(GenericAPIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            print('post 1')
             serializer.save()
+            print('post 2')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -100,6 +104,20 @@ class EstimationView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserListView(ListAPIView):
+    serializer_class = UserDetailSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = UserFilter
+
+    def get_queryset(self):
+        users = User.objects.all()
+        # serializer = UserDetailSerializer(users, many=True)
+        return users
+
+    # def get_queryset(self):
+    #     return
 
 
 def send_mutual_sympathy_message(user1, user2):
