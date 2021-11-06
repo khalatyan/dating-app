@@ -21,9 +21,7 @@ class RegisterView(GenericAPIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            print('post 1')
             serializer.save()
-            print('post 2')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
